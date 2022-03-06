@@ -188,5 +188,26 @@ public class EmployeeDetailsDao {
 		return i;
 	}
 	
-	
+	public List<EmployeeDetails> updateEmployee(String empcode)
+	{
+		String Query = "select emp_name, emp_code, email, address1, address2, city, state, date_of_birth, joining_date from employeeDetails where emp_code = ?";
+		List<EmployeeDetails> updateList = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement p1 = null;
+		ResultSet rs = null;
+		try {
+			con = ConnectionUtil.getDbConnection();
+			p1 = con.prepareStatement(Query);
+			p1.setString(1, empcode);
+			rs = p1.executeQuery();
+			while(rs.next()){
+				EmployeeDetails employeeList = new EmployeeDetails(rs.getString("emp_name"), rs.getString("emp_code"), rs.getString("email"), 
+						 rs.getString("address1"), rs.getString("address2"), rs.getString("city"), rs.getString("state"), rs.getDate("date_of_birth").toLocalDate(), rs.getDate("joining_date").toLocalDate());
+				updateList.add(employeeList);
+			}	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return updateList;
+	}
 }

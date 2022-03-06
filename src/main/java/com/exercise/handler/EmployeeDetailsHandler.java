@@ -8,6 +8,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 
+import com.exercise.business.EmployeeDetailsBusiness;
 import com.exercise.daoimpl.EmployeeDetailsDao;
 import com.exercise.model.EmployeeDetails;
 
@@ -27,12 +28,9 @@ public class EmployeeDetailsHandler {
 		LocalDate doj = LocalDate.parse(request.getParameter("doj"));
 	
 		EmployeeDetails employee = new EmployeeDetails(empname, empcode, emailid, address1, address2, city, state, dob, doj);
-		
-		EmployeeDetailsDao employeedetails = new EmployeeDetailsDao();
-		
-		int i = employeedetails.insertEmployees(employee);
-		
-		return i;
+		EmployeeDetailsBusiness business = new EmployeeDetailsBusiness();
+		int i = business.registerEmployee(employee);
+		return i;	
 	}
 	
 	public List<EmployeeDetails> searchList(HttpServletRequest request){
@@ -52,14 +50,13 @@ public class EmployeeDetailsHandler {
 		{
 			toDate = LocalDate.parse(request.getParameter("toDate"));
 		}
-		EmployeeDetailsDao employeedetails = new EmployeeDetailsDao();
-	
-		List<EmployeeDetails> employeelist = employeedetails.searchEmployees(empcode, city, state, fromDate, toDate);
+		EmployeeDetailsBusiness business = new EmployeeDetailsBusiness();
+		List<EmployeeDetails> searchList = business.searchList(empcode, city, state, fromDate, toDate);
+		return searchList;
 		
-		return employeelist;
 	}
 	
-	public int employeeUpdate(HttpServletRequest request) throws SQLException
+	public List<EmployeeDetails> employeeUpdate(HttpServletRequest request) throws SQLException
 	{
 			String empname = request.getParameter("empname");
 			String empcode = request.getParameter("empcode");
@@ -72,9 +69,9 @@ public class EmployeeDetailsHandler {
 			LocalDate doj = LocalDate.parse(request.getParameter("joiningdate"));
 		
 			EmployeeDetails employeeUpdate = new EmployeeDetails(empname, empcode, emailid, address1, address2, city, state, dob, doj);
-			EmployeeDetailsDao employeedao = new EmployeeDetailsDao();
-			int i = employeedao.employeeDetailsUpdate(employeeUpdate);
-			return i;	
+			EmployeeDetailsBusiness business = new EmployeeDetailsBusiness();
+			List<EmployeeDetails> updateList = business.updateEmployee(empcode);
+			return updateList;	
 	}
 }
 

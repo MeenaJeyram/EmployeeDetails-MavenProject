@@ -19,21 +19,17 @@ public class UpdateDetailsServ extends HttpServlet {
    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		try {
-				EmployeeDetailsHandler employeeHandler = new EmployeeDetailsHandler();
-				int i = employeeHandler.employeeUpdate(request);
-        		
-				if(i==1) 
-				{
-					 RequestDispatcher requestdispatcher = request.getRequestDispatcher("updateMsg.jsp");
-                     requestdispatcher.forward(request, response);
-				}
-				else {
-					 RequestDispatcher requestdispatcher = request.getRequestDispatcher("searchList.jsp");
-                     requestdispatcher.forward(request, response);
-				}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		EmployeeDetailsHandler employeeHandler = new EmployeeDetailsHandler();
+		int i = employeeHandler.employeeRegisterHandler(request);
+		
+		if(i==1) 
+		{
+			 RequestDispatcher requestdispatcher = request.getRequestDispatcher("updateMsg.jsp");
+		     requestdispatcher.forward(request, response);
+		}
+		else {
+			 RequestDispatcher requestdispatcher = request.getRequestDispatcher("searchList.jsp");
+		     requestdispatcher.forward(request, response);
 		}
 	}
 }
